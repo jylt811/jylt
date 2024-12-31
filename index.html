@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Together</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-600 text-white font-sans">
+  <div class="min-h-screen flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-6">We've Been Together For</h1>
+      <div class="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="years" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Years</p>
+        </div>
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="months" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Months</p>
+        </div>
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="days" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Days</p>
+        </div>
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="hours" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Hours</p>
+        </div>
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="minutes" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Minutes</p>
+        </div>
+        <div class="bg-white text-black p-6 rounded-lg shadow-lg animate__animated animate__fadeIn">
+          <p id="seconds" class="text-4xl font-bold">0</p>
+          <p class="mt-2 text-lg">Seconds</p>
+        </div>
+      </div>
+      <div class="mt-8">
+        <p class="text-lg">Start Date: <span id="startDate"></span></p>
+      </div>
+    </div>
+  </div>
+    <script>
+        const startDate = new Date('2024-11-09T18:09:23');
+        function calculateTimeTogether() {
+            const currentDate = new Date();
+            const timeDifference = currentDate - startDate;
+            const millisecondsInYear = 1000 * 60 * 60 * 24 * 365;
+            const millisecondsInMonth = 1000 * 60 * 60 * 24 * 30;
+            const millisecondsInDay = 1000 * 60 * 60 * 24;
+            const millisecondsInHour = 1000 * 60 * 60;
+            const millisecondsInMinute = 1000 * 60;
+            const millisecondsInSecond = 1000;
+            const years = Math.floor(timeDifference / millisecondsInYear);
+            const months = Math.floor((timeDifference % millisecondsInYear) / millisecondsInMonth);
+            const days = Math.floor((timeDifference % millisecondsInMonth) / millisecondsInDay);
+            const hours = Math.floor((timeDifference % millisecondsInDay) / millisecondsInHour);
+            const minutes = Math.floor((timeDifference % millisecondsInHour) / millisecondsInMinute);
+            const seconds = Math.floor((timeDifference % millisecondsInMinute) / millisecondsInSecond);
+            document.getElementById('years').innerHTML = years;
+            document.getElementById('months').innerHTML = months;
+            document.getElementById('days').innerHTML = days;
+            document.getElementById('hours').innerHTML = hours;
+            document.getElementById('minutes').innerHTML = minutes;
+            document.getElementById('seconds').innerHTML = seconds;
+            animateCounter('years');
+            animateCounter('months');
+            animateCounter('days');
+            animateCounter('hours');
+            animateCounter('minutes');
+            animateCounter('seconds');
+            document.getElementById('startDate').innerHTML = startDate.toDateString() + " " + startDate.toLocaleTimeString();
+        }
+        function animateCounter(counterId) {
+            const element = document.getElementById(counterId);
+            element.classList.remove('animate__fadeIn');
+            void element.offsetWidth;
+            element.classList.add('animate__animated', 'animate__fadeIn');
+        }
+        setInterval(calculateTimeTogether, 1000);
+        window.onload = calculateTimeTogether;
+    </script>
+</body>
+</html>
