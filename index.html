@@ -1,143 +1,519 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Time Together(JYLT)</title>
-  <style>
-    @keyframes heartbeat {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2);
-      }
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Counter</title>
+    <style>
+        :root {
+            --primary-color: #ff6b81;
+            --secondary-color: #ff4757;
+            --accent-color: #ff8e8e;
+            --text-color: #333;
+            --light-color: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    .heart-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #ffeffe;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .heart {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: rgba(255, 107, 129, 0.6);
-      transform: rotate(-45deg);
-      animation: heartbeat 2s infinite;
-    }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff5f5;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
 
-    .heart:before,
-    .heart:after {
-      content: '';
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      background-color: rgba(255, 107, 129, 0.6);
-      border-radius: 50%;
-    }
+        .love-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            min-height: 100vh;
+        }
 
-    .heart:before {
-      top: -15px;
-      left: 0;
-    }
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    .heart:after {
-      left: 15px;
-      top: 0;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-    .heart-bg .heart {
-      top: calc(100% * var(--y));
-      left: calc(100% * var(--x));
-      animation-delay: calc(-2s * var(--delay));
-    }
-  </style>
+        .header h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--primary-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .couple-names {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .couple-names input {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5rem;
+            text-align: center;
+            border: none;
+            border-bottom: 2px solid var(--primary-color);
+            background: transparent;
+            padding: 0.5rem;
+            color: var(--text-color);
+            max-width: 200px;
+        }
+
+        .couple-names input:focus {
+            outline: none;
+            border-bottom-color: var(--secondary-color);
+        }
+
+        .heart-icon {
+            color: var(--secondary-color);
+            font-size: 2rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        .anniversary-date {
+            margin-top: 1rem;
+        }
+
+        .anniversary-date label {
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .anniversary-date input {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .counter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .counter-box {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 1.5rem 1rem;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .counter-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .counter-label {
+            font-size: 1rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .achievements-container {
+            margin-bottom: 2rem;
+        }
+
+        .achievements-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .achievement-card {
+            background-color: var(--light-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.6;
+            filter: grayscale(80%);
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .achievement-date {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .love-message {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--light-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .love-message p {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: var(--primary-color);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .counter-container {
+                gap: 1rem;
+            }
+            
+            .counter-box {
+                min-width: 90px;
+                padding: 1rem 0.5rem;
+            }
+            
+            .counter-value {
+                font-size: 2rem;
+            }
+            
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="h-screen flex flex-col items-center justify-center relative">
-  <div class="heart-bg">
-    <div class="heart" style="--x: 0.05; --y: 0.1; --delay: 0.1"></div>
-    <div class="heart" style="--x: 0.2; --y: 0.25; --delay: 0.2"></div>
-    <div class="heart" style="--x: 0.4; --y: 0.3; --delay: 0.3"></div>
-    <div class="heart" style="--x: 0.6; --y: 0.45; --delay: 0.4"></div>
-    <div class="heart" style="--x: 0.8; --y: 0.6; --delay: 0.5"></div>
-    <div class="heart" style="--x: 0.15; --y: 0.7; --delay: 0.6"></div>
-    <div class="heart" style="--x: 0.35; --y: 0.8; --delay: 0.7"></div>
-    <div class="heart" style="--x: 0.55; --y: 0.15; --delay: 0.8"></div>
-    <div class="heart" style="--x: 0.75; --y: 0.9; --delay: 0.9"></div>
-    <div class="heart" style="--x: 0.95; --y: 0.05; --delay: 1.0"></div>
-  </div>
-
-  <div class="text-center mb-8 z-10">
-    <h1 class="text-4xl font-bold text-pink-800">Our Timeless Love</h1>
-    <p class="text-lg text-gray-800 mt-2">"With every passing second, my love for you grows deeper. You are my forever, my always."</p>
-    <p class="text-lg text-gray-800 mt-1">"Together, we turn moments into memories, and dreams into reality."</p>
-  </div>
-
-  <div class="relative bg-white bg-opacity-95 p-8 rounded-xl shadow-lg grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6 text-center z-10">
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="years">0</span>
-      <span class="text-lg text-gray-700">Years</span>
+<body>
+    <div class="love-container">
+        <div class="hearts-background" id="hearts-bg"></div>
+        
+        <div class="header animate__animated animate__fadeInDown">
+            <h1>Our Love Journey</h1>
+            <div class="couple-names">
+                <input type="text" id="name1" placeholder="Your Name" value="You">
+                <i class="fas fa-heart heart-icon"></i>
+                <input type="text" id="name2" placeholder="Partner's Name" value="Me">
+            </div>
+            <div class="anniversary-date">
+                <label for="start-date">Since:</label>
+                <input type="datetime-local" id="start-date" value="2024-11-09T18:09:23">
+            </div>
+        </div>
+        
+        <div class="counter-container animate__animated animate__fadeIn">
+            <div class="counter-box">
+                <div class="counter-value" id="years">0</div>
+                <div class="counter-label">Years</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-value" id="months">0</div>
+                <div class="counter-label">Months</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-value" id="days">0</div>
+                <div class="counter-label">Days</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-value" id="hours">0</div>
+                <div class="counter-label">Hours</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-value" id="minutes">0</div>
+                <div class="counter-label">Minutes</div>
+            </div>
+            <div class="counter-box">
+                <div class="counter-value" id="seconds">0</div>
+                <div class="counter-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="achievements-container animate__animated animate__fadeInUp">
+            <h2>Milestones</h2>
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Achievements will be added here dynamically -->
+            </div>
+        </div>
+        
+        <div class="love-message animate__animated animate__fadeInUp">
+            <p id="love-message-text">Every moment with you is special!</p>
+        </div>
     </div>
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="months">0</span>
-      <span class="text-lg text-gray-700">Months</span>
-    </div>
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="days">0</span>
-      <span class="text-lg text-gray-700">Days</span>
-    </div>
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="hours">0</span>
-      <span class="text-lg text-gray-700">Hours</span>
-    </div>
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="minutes">0</span>
-      <span class="text-lg text-gray-700">Minutes</span>
-    </div>
-    <div class="flex flex-col items-center bg-pink-100 rounded-full p-4 shadow">
-      <span class="text-4xl font-bold text-pink-600" id="seconds">0</span>
-      <span class="text-lg text-gray-700">Seconds</span>
-    </div>
-  </div>
-
-  <script>
-    const startDate = new Date('2024-11-09T18:09:23');
-    const yearsEl = document.getElementById('years');
-    const monthsEl = document.getElementById('months');
-    const daysEl = document.getElementById('days');
-    const hoursEl = document.getElementById('hours');
-    const minutesEl = document.getElementById('minutes');
-    const secondsEl = document.getElementById('seconds');
-
-    function updateCounter() {
-      const now = new Date();
-      const diff = now - startDate;
-
-      const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-      const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-      const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      yearsEl.textContent = years;
-      monthsEl.textContent = months;
-      daysEl.textContent = days;
-      hoursEl.textContent = hours;
-      minutesEl.textContent = minutes;
-      secondsEl.textContent = seconds;
-    }
-
-    setInterval(updateCounter, 1000);
-    updateCounter();
-  </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configuration
+            const startDate = moment(document.getElementById('start-date').value);
+            const achievements = [
+                { days: 1, title: "First Day Together", icon: "fa-heart", message: "Our journey begins!" },
+                { days: 7, title: "One Week", icon: "fa-calendar-week", message: "A whole week of love!" },
+                { days: 30, title: "One Month", icon: "fa-moon", message: "Our first month together!" },
+                { days: 100, title: "100 Days", icon: "fa-heart-circle-check", message: "100 days of happiness!" },
+                { days: 180, title: "6 Months", icon: "fa-heart-half-stroke", message: "Half a year of love!" },
+                { days: 365, title: "One Year", icon: "fa-cake-candles", message: "Happy anniversary! One year together!" },
+                { days: 730, title: "Two Years", icon: "fa-heart-circle-plus", message: "Two years and still going strong!" },
+                { days: 1825, title: "5 Years", icon: "fa-gem", message: "5 years of wonderful memories!" }
+            ];
+            
+            // DOM Elements
+            const yearsEl = document.getElementById('years');
+            const monthsEl = document.getElementById('months');
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const achievementsGrid = document.getElementById('achievements-grid');
+            const loveMessageText = document.getElementById('love-message-text');
+            const heartsBg = document.getElementById('hearts-bg');
+            const name1Input = document.getElementById('name1');
+            const name2Input = document.getElementById('name2');
+            const startDateInput = document.getElementById('start-date');
+            
+            // Create floating hearts background
+            function createHearts() {
+                heartsBg.innerHTML = '';
+                const heartCount = Math.floor(window.innerWidth / 20);
+                
+                for (let i = 0; i < heartCount; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '<i class="fas fa-heart heart"></i>';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.top = Math.random() * 100 + 'vh';
+                    heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                    heart.style.opacity = Math.random() * 0.5 + 0.1;
+                    heart.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                    heart.style.animationDelay = Math.random() * 5 + 's';
+                    heartsBg.appendChild(heart);
+                }
+            }
+            
+            // Update counter
+            function updateCounter() {
+                const now = moment();
+                const duration = moment.duration(now.diff(startDate));
+                
+                yearsEl.textContent = duration.years();
+                monthsEl.textContent = duration.months();
+                daysEl.textContent = duration.days();
+                hoursEl.textContent = duration.hours();
+                minutesEl.textContent = duration.minutes();
+                secondsEl.textContent = duration.seconds();
+                
+                // Add animation to seconds
+                secondsEl.classList.add('animate__animated', 'animate__heartBeat');
+                setTimeout(() => {
+                    secondsEl.classList.remove('animate__animated', 'animate__heartBeat');
+                }, 1000);
+                
+                // Update achievements
+                updateAchievements(duration.asDays());
+            }
+            
+            // Update achievements
+            function updateAchievements(totalDays) {
+                achievementsGrid.innerHTML = '';
+                
+                achievements.forEach(achievement => {
+                    const achieved = totalDays >= achievement.days;
+                    const achievementDate = moment(startDate).add(achievement.days, 'days');
+                    
+                    const card = document.createElement('div');
+                    card.className = `achievement-card ${achieved ? '' : 'locked'}`;
+                    card.innerHTML = `
+                        <div class="achievement-icon">
+                            <i class="fas ${achievement.icon} ${achieved ? 'fa-beat' : ''}"></i>
+                        </div>
+                        <div class="achievement-title">${achievement.title}</div>
+                        ${achieved ? 
+                            `<div class="achievement-date">Achieved on ${achievementDate.format('MMM D, YYYY')}</div>` : 
+                            `<div class="achievement-date">${Math.ceil(achievement.days - totalDays)} days to go</div>`
+                        }
+                    `;
+                    
+                    if (achieved && totalDays < achievement.days + 1) {
+                        // New achievement unlocked
+                        card.classList.add('animate__animated', 'animate__tada');
+                        loveMessageText.textContent = achievement.message;
+                        
+                        // Create celebration effect
+                        celebrate();
+                    }
+                    
+                    achievementsGrid.appendChild(card);
+                });
+            }
+            
+            // Celebration effect
+            function celebrate() {
+                // GSAP animation for counter
+                gsap.to('.counter-box', {
+                    y: -10,
+                    duration: 0.3,
+                    repeat: 1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+                
+                // Create floating hearts
+                for (let i = 0; i < 20; i++) {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '<i class="fas fa-heart heart"></i>';
+                    heart.style.position = 'fixed';
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                    heart.style.color = ['#ff6b81', '#ff4757', '#ff8e8e'][Math.floor(Math.random() * 3)];
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.zIndex = '1000';
+                    heart.style.pointerEvents = 'none';
+                    document.body.appendChild(heart);
+                    
+                    gsap.to(heart, {
+                        x: (Math.random() - 0.5) * 500,
+                        y: (Math.random() - 0.5) * 500,
+                        opacity: 0,
+                        duration: 2,
+                        onComplete: () => heart.remove()
+                    });
+                }
+            }
+            
+            // Update love message based on time
+            function updateLoveMessage() {
+                const now = moment();
+                const hours = now.hours();
+                
+                let message = "I love you more every day!";
+                
+                if (hours < 5) message = "You're the first thing on my mind this morning!";
+                else if (hours < 12) message = "Good morning my love!";
+                else if (hours < 17) message = "Thinking of you this afternoon!";
+                else if (hours < 22) message = "Hope you're having a wonderful evening!";
+                else message = "Sweet dreams my love!";
+                
+                loveMessageText.textContent = message;
+            }
+            
+            // Handle input changes
+            function handleInputChanges() {
+                name1Input.addEventListener('input', updateTitle);
+                name2Input.addEventListener('input', updateTitle);
+                startDateInput.addEventListener('change', function() {
+                    startDate = moment(this.value);
+                    updateCounter();
+                });
+            }
+            
+            // Update page title
+            function updateTitle() {
+                const name1 = name1Input.value || 'You';
+                const name2 = name2Input.value || 'Me';
+                document.title = `${name1} & ${name2}'s Love Counter`;
+            }
+            
+            // Initialize
+            createHearts();
+            updateCounter();
+            updateLoveMessage();
+            handleInputChanges();
+            updateTitle();
+            
+            // Update counter every second
+            setInterval(updateCounter, 1000);
+            
+            // Update love message every hour
+            setInterval(updateLoveMessage, 3600000);
+            
+            // Recreate hearts on resize
+            window.addEventListener('resize', createHearts);
+        });
+    </script>
 </body>
 </html>
